@@ -1,0 +1,10 @@
+springroll
+sandwich
+watermelon
+cheeseburger
+icecream
+pineapple
+smoothie
+spaghetti
+watercress
+shiitake
