@@ -38,9 +38,10 @@ public class CPTSydneytools{
 				if (chrControl == 'p' || chrControl == 'P'){
 					blnwaiting = false;
 				
-					CPTSydneytools.UserNameInfo(con);
-					CPTSydneytools.Themes(con);
-					CPTSydneytools.PlayGame(con);
+					String strUserName = CPTSydneytools.UserNameInfo(con);
+					String strUserChoice = CPTSydneytools.Themes(con);
+					
+					CPTSydneytools.PlayGame(con, strUserName, strUserChoice);
 				}
 			}
 			
@@ -64,7 +65,7 @@ public class CPTSydneytools{
 			con.drawString("Enter name: ", 80,95);
 			strUsername = con.readLine();
 			con.drawString(strUsername, 100,200);
-			con.sleep(33);
+			con.sleep(44);
 			return strUsername;
 		}
 		
@@ -96,8 +97,33 @@ public class CPTSydneytools{
 			themeNames.close();
 			strUserChoice = con.readLine();
 			con.drawString(strUserChoice,90,400);
+			con.sleep(44);
+			
 			//con.repaint();
 			return strUserChoice;
+			
+		}
+		
+		public static void drawmaingame(Console con, String strWord){
+			con.clear();
+			int intCount = 0;
+			String strGuess = strWord;
+			int intWordLength = strWord.length();
+			String strTheme = "";
+			String strUserChoice = "";
+			con.setDrawColor(Color.WHITE);
+			con.fillRect(300,0,10,800);
+			int intx = 400;
+			int intgap = 14;
+			for(intCount = 0; intCount < intWordLength; intCount++){
+				con.fillRect(intx,350,40,2);
+				intx= intx+40+intgap;
+			
+			}
+			
+			CPTSydneytools.getUserInput(strGuess,con);
+			
+	
 		}
 		
 		
@@ -106,24 +132,26 @@ public class CPTSydneytools{
 			char chrQuit = con.getChar();
 			if(chrQuit == 'q' || chrQuit == 'Q'){
 				blnQuit = true;
-				CPTSydneytools.PlayGame(con);
+	
 			}
 			return blnQuit;
 		}
 		
-		public static void PlayGame(Console con){
-			String strUserName;
-			String strTest = "";
+		public static void PlayGame(Console con, String strUserName, String strUserChoice){
+			
+			con.clear();
+			
 			String strTheme = "";
 			String strWord;
-			String strUserChoice;
+		
 			String strCorrect = "false";
 			int intGuesses = 0;
 			int intCount = 0;
 			int intWinScore = 0;
 			String strUserHint = "";
+			String strUserInput;
 			//Getting user's name
-			strUserName = CPTSydneytools.UserNameInfo(con);
+		
 			//Printing Themes
 			//TextInputFile themeNames = new TextInputFile("themes.txt");
 			
@@ -136,16 +164,19 @@ public class CPTSydneytools{
 			//Using ThemeChosen method to get the theme the user wanted.
 			//con.println("Choose a theme: ");
 			//strUserChoice = con.readLine();
-			strUserChoice = CPTSydneytools.Themes(con);
+	
 			
 			strTheme = CPTSydneytools.Themechosen(strUserChoice);
 			strWord = CPTSydneytools.ChooseWord(strTheme);
-			strUserHint = CPTSydneytools.UserGuess(strWord,intGuesses, intWinScore, strCorrect,con);
+			CPTSydneytools.drawmaingame(con, strWord);
+			//strUserInput = CPTSydneytools.getUserInput(con);
+			//strUserHint = CPTSydneytools.UserGuess(strWord,strUserInput,intGuesses, intWinScore, strCorrect,con);
 			//WORKS THEME & WOD
-			//con.println(strTheme);
-			//con.println(strWord);
+			con.println(strTheme);
+			con.println(strWord);
 			
-			
+			con.println(strUserHint);
+			con.println(strWord);
 			for(intCount = 0; intCount<= strWord.length(); intCount++){
 				if(strUserHint.equalsIgnoreCase (strWord.substring(intCount, intCount+1))){
 					con.println(strUserHint);
@@ -154,6 +185,41 @@ public class CPTSydneytools{
 			
 		}
 		
+		public static String getUserInput(String strWord,Console con){
+			String strUserInput = "";
+			
+			
+			int intx = 420;
+			int intspacing = 0;
+			boolean blntyping = true;
+			char chrletter;
+			String strletter = "";
+			
+			Font fntWord = con.loadFont("AmericanTypewriter.ttc", 25);
+			con.setDrawFont(fntWord);
+			
+			while(blntyping == true){
+				
+				chrletter = con.getChar();
+				if(chrletter >= 65 && chrletter >= 90 || chrletter >= 97 && chrletter <= 122){
+					if(chrletter == '\n'){
+						blntyping = false;
+					}else if(chrletter == 8 && strUserInput.length() > 0){
+						strUserInput = strUserInput.substring(0,strUserInput.length()-1);
+						intx = intx - 54;
+						con.fillRect(intx,345,40,60);
+		
+					}
+			
+					strletter = String.valueOf(chrletter);
+					con.drawString(strletter,intx,345);
+					intx = intx +54;
+				
+				}
+			
+			}
+			return strUserInput;
+		}	
 		
 		
 		public static String Themechosen(String strUserChoice){
@@ -215,8 +281,8 @@ public class CPTSydneytools{
 		}
 		
 		
-		public static String UserGuess(String strWord, int intGuesses, int intWins,String strCorrect, Console con){
-			String strGuess = con.readLine();
+		public static String UserGuess(String strWord, String strGuess, int intGuesses, int intWins,String strCorrect, Console con){
+			//String strGuess = con.readLine();
 			String strWordSplit [][];
 			int intRand = 0;
 			int intCount = 0;
@@ -225,35 +291,37 @@ public class CPTSydneytools{
 			String strNumTemp;
 			String strUserHint = "";
 			strWordSplit = new String[strWord.length()][2];
-			while(!strWord.equalsIgnoreCase(strGuess)){
-				if (!strGuess.equalsIgnoreCase(strWord)){
-					intGuesses = intGuesses + 1;
-					for (intCount = 0; intCount <= strWord.length(); intCount++){
-						intRand = (int) (Math.random()*100+1);
-						strWordSplit[intCount][0] = strWord.substring(intCount,intCount+1);
-						strWordSplit[intCount][1] = intRand + "";
-					}
-					for(intCount2 = 0; intCount2 < strWord.length()-1; intCount2++){
-						for (intCount = 0; intCount < strWord.length()-1; intCount++){
-							//Convert the people's score to integer and compare
-							if(Integer.parseInt(strWordSplit[intCount][1]) > Integer.parseInt(strWordSplit[intCount+1][1])){
-								strLetterTemp = strWordSplit[intCount][0];
-								strWordSplit[intCount][0] = strWordSplit[intCount+1][0];
-								strWordSplit[intCount+1][0] = strLetterTemp;
-								//swap critics
-								strNumTemp = strWordSplit[intCount][1];
-								strWordSplit[intCount][1] = strWordSplit[intCount+1][1];
-								strWordSplit[intCount+1][1] = strNumTemp;
-						
+			if(intGuesses <= 5){
+				while(!strWord.equalsIgnoreCase(strGuess)){
+					if (!strGuess.equalsIgnoreCase(strWord)){
+						intGuesses = intGuesses + 1;
+						for (intCount = 0; intCount < strWord.length(); intCount++){
+							intRand = (int) (Math.random()*100+1);
+							strWordSplit[intCount][0] = strWord.substring(intCount,intCount+1);
+							strWordSplit[intCount][1] = intRand + "";
+						}
+						for(intCount2 = 0; intCount2 < strWord.length()-1; intCount2++){
+							for (intCount = 0; intCount < strWord.length()-1; intCount++){
+								//Convert the people's score to integer and compare
+								if(Integer.parseInt(strWordSplit[intCount][1]) > Integer.parseInt(strWordSplit[intCount+1][1])){
+									strLetterTemp = strWordSplit[intCount][0];
+									strWordSplit[intCount][0] = strWordSplit[intCount+1][0];
+									strWordSplit[intCount+1][0] = strLetterTemp;
+									//swap critics
+									strNumTemp = strWordSplit[intCount][1];
+									strWordSplit[intCount][1] = strWordSplit[intCount+1][1];
+									strWordSplit[intCount+1][1] = strNumTemp;
+							
+								}
 							}
 						}
+					
+						strUserHint = strWordSplit[intGuesses][0];
+					}else{
+						intWins = intWins+1;
+						strCorrect = "true";
+						return strCorrect;
 					}
-				
-					strUserHint = strWordSplit[intGuesses][0];
-				}else{
-					intWins = intWins+1;
-					strCorrect = "true";
-					return strCorrect;
 				}
 			}
 			return strUserHint;
