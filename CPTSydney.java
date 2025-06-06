@@ -15,19 +15,6 @@ public class CPTSydney{
 	
 		CPTSydneytools.drawMainMenu(con);
 		
-	
-		// Setting a predefined color
-		//con.setDrawColor(Color.RED);
-		//con.fillOval(400, 10, 100, 75);
-	
-		//con.drawImage(imgLogo, 0, 0);
-	
-	
-		con.setDrawColor(new Color(200, 30, 30));
-		con.drawString("Hangman Menu", 75,0);
-		
-		// repainting ensures that all of the drawing commands above appear
-		con.repaint();
 		// Waiting for 33ms before looping around again
 		// to show the drawing on the screen
 		// before looping back around
