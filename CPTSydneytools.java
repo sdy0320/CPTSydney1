@@ -70,9 +70,11 @@ public class CPTSydneytools{
 		
 		
 		public static String Themes(Console con){
+			boolean blnUserChoice = false;
 			con.clear();
 			String strTheme = "";
 			String strUserChoice = "";
+			String strThemes [][];
 			con.setDrawColor(Color.BLACK);
 			con.fillRect(0,0,300,800);
 			BufferedImage imgthemes = con.loadImage("newthemebackground.png");
@@ -92,7 +94,14 @@ public class CPTSydneytools{
 				con.drawString(strTheme,40,inty);
 				inty = inty+50;
 			}
-			themeNames.close();
+			
+		//	while(blnUserChoice == false){
+				//strUserChoice = con.readLine();
+				//con.drawString(strUserChoice,90,400);
+				//if(!strUserChoice.equalsIgnoreCase()){
+					//con.drawString("Please type again", 200,80);
+				//}
+			//}
 			strUserChoice = con.readLine();
 			con.drawString(strUserChoice,90,400);
 			con.sleep(44);
@@ -142,55 +151,49 @@ public class CPTSydneytools{
 			String strTheme = "";
 			String strWord;
 			
-			String strCorrect = "false";
+			boolean blnCorrect = false;
 			int intGuesses = 0;
 			int intCount = 0;
 			int intWinScore = 0;
 			int intx = 408;
+			int intrevealedIndexes [];
+			intrevealedIndexes = new int[5];
 			String strUserHint = "";
 			String strUserInput;
-			//Getting user's name
-		
-			//Printing Themes
-			//TextInputFile themeNames = new TextInputFile("themes.txt");
-			
-			//con.println("Themes: ");
-			//while(themeNames.eof() == false){
-				//strTheme = themeNames.readLine();
-				//con.println(strTheme);
-			//}
-			//themeNames.close();
-			//Using ThemeChosen method to get the theme the user wanted.
-			//con.println("Choose a theme: ");
-			//strUserChoice = con.readLine();
-	
+			String strHintLetters [][];
 			
 			strTheme = CPTSydneytools.Themechosen(strUserChoice);
 			strWord = CPTSydneytools.ChooseWord(strTheme);
-			CPTSydneytools.drawmaingame(con, strWord);
-			strUserInput = CPTSydneytools.getUserInput(strWord,intGuesses,con);
-			strUserHint = CPTSydneytools.UserGuess(strWord,strUserInput,intGuesses, intWinScore, strCorrect,con);
+			CPTSydneytools.drawmaingame(con,strWord);
+			strUserInput = CPTSydneytools.getUserInput(strWord,intrevealedIndexes,intGuesses,con);
+			strHintLetters = CPTSydneytools.UserGuess(strWord,strUserInput,intGuesses, intWinScore, blnCorrect,con);
+			intrevealedIndexes[intGuesses] = Integer.parseInt(strHintLetters[intGuesses][1]);
+			
+			while(blnCorrect == false && intGuesses < 5){
+				CPTSydneytools.drawmaingame(con,strWord);
+				if(strUserInput.equalsIgnoreCase(strWord)){
+					blnCorrect = true;
+					break;
+				}else{
+				
+					for(intCount = 0; intCount < intGuesses; intCount++){
+					CPTSydneytools.drawUserhint(strHintLetters[intGuesses][0],Integer.parseInt( strHintLetters[intGuesses][1]),intGuesses, con);
+					
+					}
+					strUserInput = CPTSydneytools.getUserInput(strWord,intrevealedIndexes,intGuesses,con);
+				strHintLetters = CPTSydneytools.UserGuess(strWord,strUserInput,intGuesses, intWinScore, blnCorrect,con);
+				}
+				
+			}
+	
+			
 			//WORKS THEME & WORD
 			
-			con.println(strUserHint);
-			con.println(strWord);
 			
-			Font fntWord = con.loadFont("AmericanTypewriter.ttc", 25);
-			con.setDrawFont(fntWord);
-			con.setDrawColor(Color.WHITE);
-			con.drawString(strUserHint, 245,130);
-			
-			for(intCount = 0; intCount< strWord.length(); intCount++){
-				if(strUserHint.equalsIgnoreCase (strWord.substring(intCount, intCount+1))){
-					con.setDrawColor(Color.WHITE);
-					con.drawString(strUserHint, intx +(54)*intCount,295);
-				}
-				intx = intx +54;
-			}
 			
 		}
 		
-		public static String getUserInput(String strWord, int intGuesses,Console con){
+		public static String getUserInput(String strWord, int intIndexes[], int intGuesses,Console con){
 			String strUserInput = "";
 			
 			int intCount = 0;
@@ -202,7 +205,16 @@ public class CPTSydneytools{
 			
 			Font fntWord = con.loadFont("AmericanTypewriter.ttc", 25);
 			con.setDrawFont(fntWord);
-	
+			
+			
+			for (intCount = 0 ; intCount < strWord.length(); intCount++){
+				if(intIndexes[intCount] > 0 && intCount != intIndexes[intCount]){
+					con.setDrawColor(Color.BLACK);
+					con.fillRect(intx-8+(54*intCount),290,40,50);
+				}
+				
+			}
+			con.setDrawColor(Color.WHITE);
 			while(blntyping == true){
 				chrletter = con.getChar();
 				if(chrletter == '\n'){
@@ -217,7 +229,6 @@ public class CPTSydneytools{
 					con.setDrawColor(Color.BLACK);
 					
 					con.fillRect(intx,295,40,50);
-				//}else if(Character.isLetter(chrletter) && strUserInput.length() < strWord.length()){
 				}else if((chrletter >= 97 && chrletter <= 122) || (chrletter >=65 && chrletter <=90)){
 					if(strUserInput.length() < strWord.length()){
 						strletter = String.valueOf(chrletter).toUpperCase();
@@ -296,18 +307,20 @@ public class CPTSydneytools{
 		}
 		
 		
-		public static String UserGuess(String strWord, String strGuess, int intGuesses, int intWins,String strCorrect, Console con){
+		public static String [][] UserGuess(String strWord, String strGuess, int intGuesses, int intWins,boolean blnCorrect, Console con){
 			//String strGuess = con.readLine();
 			String strWordSplit [][];
 			int intRand = 0;
 			int intCount = 0;
 			int intCount2 = 0;
-			String strindex = "";
+			int intCount3 =0;
+			int intindex = 0;
 			String strLetterTemp;
 			String strNumTemp;
 			String strUserHint = "";
 			String strOrigWordSplit [][];
 			String strSortedWordSplit[][];
+			String strHintLetters [][];
 			strOrigWordSplit = new String[strWord.length()][2];
 			strSortedWordSplit = new String[strWord.length()][2];
 			
@@ -337,24 +350,45 @@ public class CPTSydneytools{
 						}
 					}
 				}
+				strUserHint = strSortedWordSplit[intGuesses][0];
+				String strHintIndex = strSortedWordSplit[intGuesses][1];
 				
 				for (intCount = 0; intCount <strWord.length(); intCount++){
-					if(strOrigWordSplit[intCount][1].equalsIgnoreCase(strSortedWordSplit[intCount][1])){
-						strindex = intCount+"";
+					if(strOrigWordSplit[intCount][0].equalsIgnoreCase(strUserHint) && strOrigWordSplit[intCount][1].equals(strHintIndex)){
+						intindex = intCount;
+						break;
 					}
 				}
-				return strindex;
-				strUserHint = strSortedWordSplit[intGuesses][0];
-				return strUserHint;		
+				
+
 			}else if(strWord.equalsIgnoreCase(strGuess)) {
-				strCorrect = "true";
-				return strCorrect;
+				blnCorrect = true;
 			}
+			strHintLetters = CPTSydneytools.drawUserhint(strUserHint, intindex, intGuesses, con);
+			return strHintLetters;
 			
-			return "";
 		}
 		
-	
-			
-			
 		
+		public static String[][] drawUserhint(String strUserHint, int intIndex, int intGuesses, Console con){
+			Font fntWord = con.loadFont("AmericanTypewriter.ttc", 25);
+			con.setDrawFont(fntWord);
+			con.setDrawColor(Color.BLACK);
+			boolean blnDrawhint = false;
+			
+			int intx = 408;
+			String strHintLetters[][];
+			strHintLetters = new String [5][2];
+			strHintLetters [intGuesses][0] = strUserHint;
+			strHintLetters [intGuesses][1] = intIndex+"";
+			
+			con.fillRect(intx-8+(54*intIndex),290,40,50);
+			con.setDrawColor(Color.BLUE);
+			con.drawString(strUserHint.toUpperCase(), intx+(54*intIndex),295);
+			con.repaint();
+			return strHintLetters;
+		}
+		
+		
+}
+	

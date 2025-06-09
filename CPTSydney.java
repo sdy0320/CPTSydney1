@@ -11,7 +11,7 @@ public class CPTSydney{
 		
 
 		//BufferedImage imgLogo = con.loadImage("HangmanLogo.png");
-		// set the background colour
+		// set the background colouefefefwefer
 	
 		CPTSydneytools.drawMainMenu(con);
 		

@@ -11,9 +11,11 @@ public class test01{
 		String strUserInput = "arachne";
 		int intGuesses = 0;
 		int intWinScore =0;
-		String strCorrect = "false";
+		boolean blnCorrect = false;
 		int intY = 200;
-		String strUserHint = CPTSydneytools.UserGuess(strWord,strUserInput,intGuesses, intWinScore, strCorrect,con);
-		con.println(strUserHint);
+		//String strUserHint = CPTSydneytools.UserGuess(strWord,strUserInput,intGuesses, intWinScore, strCorrect,con);
+		boolean blncorrect = CPTSydneytools.UserGuess(strWord,strUserInput,intGuesses, intWinScore, blnCorrect,con);
+		//con.println(strUserHint);
+		
 	}
 }
