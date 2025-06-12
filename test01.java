@@ -14,8 +14,12 @@ public class test01{
 		boolean blnCorrect = false;
 		int intY = 200;
 		//String strUserHint = CPTSydneytools.UserGuess(strWord,strUserInput,intGuesses, intWinScore, strCorrect,con);
-		boolean blncorrect = CPTSydneytools.UserGuess(strWord,strUserInput,intGuesses, intWinScore, blnCorrect,con);
+		//boolean blncorrect = CPTSydneytools.UserGuess(strWord,strUserInput,intGuesses, intWinScore, blnCorrect,con);
 		//con.println(strUserHint);
 		
+		String strHintLetters [][];
+		
+		strHintLetters = CPTSydneytools.UserGuess(strWord,strUserInput,intGuesses, intWinScore, blnCorrect,con);
+		con.println(strHintLetters);
 	}
 }
