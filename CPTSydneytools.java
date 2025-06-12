@@ -468,8 +468,10 @@ public class CPTSydneytools{
 				blnCorrect = true;
 			}
 			CPTSydneytools.drawUserhint(strUserHint, intindex, intGuesses, con);
-			strHintLetters[intGuesses][0] = strUserHint;
-			strHintLetters[intGuesses][1] = String.valueOf(intindex);
+			if (intGuesses < 5) {
+				strHintLetters[intGuesses][0] = strUserHint;
+				strHintLetters[intGuesses][1] = String.valueOf(intindex);
+			}
 		
 			return strHintLetters;
 			
