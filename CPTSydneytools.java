@@ -498,7 +498,7 @@ public class CPTSydneytools{
 		
 		//Saving Username and winscore onto leaderboard
 		public static void saveToLeaderboard(String strUserName, int intWinScore){
-			TextOutputFile savetoBoard = new TextOutputFile("LeaderBoard,txt", true);
+			TextOutputFile savetoBoard = new TextOutputFile("LeaderBoard.txt", true);
 			savetoBoard.println(strUserName);
 			savetoBoard.println(intWinScore);
 			
@@ -509,7 +509,7 @@ public class CPTSydneytools{
 		public static void drawLeaderBoard(Console con){
 			String strUserName;
 			int intWinScore;
-			TextInputFile savetoBoard = new TextInputFile("LeaderBoard,txt");
+			TextInputFile savetoBoard = new TextInputFile("LeaderBoard.txt");
 			Font fntWord = con.loadFont("AmericanTypewriter.ttc", 25);
 			
 			con.setDrawFont(fntWord);
