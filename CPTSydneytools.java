@@ -251,9 +251,10 @@ public class CPTSydneytools{
 				
 				}else{
 					strHintLetters = CPTSydneytools.UserGuess(strWord, strUserInput, intGuesses, intWinScore, blnCorrect, con);
-					CPTSydneytools.drawUserhint(strHintLetters[intGuesses][0], Integer.parseInt(strHintLetters[intGuesses][1]), intGuesses, con);
-
-					intGuesses = intGuesses +1;
+					if (strHintLetters[intGuesses][0] != null && strHintLetters[intGuesses][1] != null) {
+						CPTSydneytools.drawUserhint(strHintLetters[intGuesses][0], Integer.parseInt(strHintLetters[intGuesses][1]), intGuesses, con);
+					}
+					intGuesses++;
 				}
 				
 					
@@ -467,10 +468,8 @@ public class CPTSydneytools{
 				blnCorrect = true;
 			}
 			CPTSydneytools.drawUserhint(strUserHint, intindex, intGuesses, con);
-			for(intCount = 0; intCount < intGuesses; intCount++){
-				strHintLetters [intGuesses][0] = strUserHint;
-				strHintLetters[intGuesses][1] = String.valueOf(intindex);
-			}
+			strHintLetters[intGuesses][0] = strUserHint;
+			strHintLetters[intGuesses][1] = String.valueOf(intindex);
 		
 			return strHintLetters;
 			
@@ -498,7 +497,7 @@ public class CPTSydneytools{
 		
 		//Saving Username and winscore onto leaderboard
 		public static void saveToLeaderboard(String strUserName, int intWinScore){
-			TextOutputFile savetoBoard = new TextOutputFile("LeaderBoard,txt", true);
+			TextOutputFile savetoBoard = new TextOutputFile("LeaderBoard.txt", true);
 			savetoBoard.println(strUserName);
 			savetoBoard.println(intWinScore);
 			
@@ -509,7 +508,7 @@ public class CPTSydneytools{
 		public static void drawLeaderBoard(Console con){
 			String strUserName;
 			int intWinScore;
-			TextInputFile savetoBoard = new TextInputFile("LeaderBoard,txt");
+			TextInputFile savetoBoard = new TextInputFile("LeaderBoard.txt");
 			Font fntWord = con.loadFont("AmericanTypewriter.ttc", 25);
 			
 			con.setDrawFont(fntWord);
