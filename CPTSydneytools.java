@@ -225,7 +225,7 @@ public class CPTSydneytools{
 			intRevealedIndexes = new int[5];
 			String strUserHint = "";
 			String strUserInput = "";
-			String strHintLetters [][] = new String [5][2];
+			String strHintLetters [][] = new String [6][2];
 			Font fntWord = con.loadFont("AmericanTypewriter.ttc", 30);
 
 			con.setDrawFont(fntWord);
@@ -421,7 +421,7 @@ public class CPTSydneytools{
 			String strOrigWordSplit [][];
 			String strSortedWordSplit[][];
 			String strHintLetters [][];
-			strHintLetters = new String[5][2];
+			strHintLetters = new String[6][2];
 			strOrigWordSplit = new String[strWord.length()][2];
 			strSortedWordSplit = new String[strWord.length()][2];
 			
@@ -467,7 +467,7 @@ public class CPTSydneytools{
 				blnCorrect = true;
 			}
 			CPTSydneytools.drawUserhint(strUserHint, intindex, intGuesses, con);
-			if (intGuesses < 5) {
+			if (intGuesses < 6) {
 				strHintLetters[intGuesses][0] = strUserHint;
 				strHintLetters[intGuesses][1] = String.valueOf(intindex);
 			}
@@ -485,7 +485,7 @@ public class CPTSydneytools{
 			
 			int intx = 408;
 			String strHintLetters[][];
-			strHintLetters = new String [5][2];
+			strHintLetters = new String [6][2];
 			strHintLetters [intGuesses][0] = strUserHint;
 			strHintLetters [intGuesses][1] = intIndex+"";
 			
