@@ -178,6 +178,7 @@ public class CPTSydneytools{
 
 				}else if(intGuesses == 6 ){
 					BufferedImage imghangman6 = con.loadImage("hangman6.jpg");
+					System.out.println("Loading hangman6 image...");
 					con.drawImage(imghangman6, 0,0);
 
 				}
@@ -256,11 +257,10 @@ public class CPTSydneytools{
 					}
 					intGuesses++;
 				}
-				
-					
 			
 			}
-			
+			BufferedImage imghangman6 = con.loadImage("hangman6.jpg");
+			con.drawImage(imghangman6, 0,0);
 			blnPlayAgain = CPTSydneytools.playerWinorLose(blnCorrect, strUserName, intWinScore, con);
 		
 			if(blnPlayAgain == true){
