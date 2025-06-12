@@ -261,9 +261,8 @@ public class CPTSydneytools{
 			
 			}
 			
-			if(intGuesses == 6 && !strUserInput.equalsIgnoreCase(strWord)){
-				blnPlayAgain = CPTSydneytools.playerWinorLose(blnCorrect, strUserName, intWinScore, con);
-			}
+			blnPlayAgain = CPTSydneytools.playerWinorLose(blnCorrect, strUserName, intWinScore, con);
+		
 			if(blnPlayAgain == true){
 				intGuesses = 0;
 				CPTSydneytools.drawMainMenu(con);
